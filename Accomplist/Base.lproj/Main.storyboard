@@ -70,17 +70,42 @@
                                     <action selector="menuButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="V2y-CA-lFX"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RaD-1b-Vjx">
+                                <rect key="frame" x="27" y="109" width="30" height="30"/>
+                                <state key="normal" title="Edit">
+                                    <color key="titleColor" red="0.83137254900000002" green="0.86274509799999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="editButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ET5-aO-79J"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XjJ-TP-DcK">
+                                <rect key="frame" x="325" y="113" width="22" height="22"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="addButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8kK-VL-CzJ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.32852089410000002" blue="0.57488495110000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="XjJ-TP-DcK" firstAttribute="leading" secondItem="9H8-JH-Pbc" secondAttribute="trailing" constant="94" id="0Bl-0Z-9mk"/>
                             <constraint firstItem="YAb-wp-Hoh" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.75" id="0Lj-Dg-NFa"/>
                             <constraint firstItem="YAb-wp-Hoh" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="0uu-eo-zOu"/>
+                            <constraint firstItem="YAb-wp-Hoh" firstAttribute="top" secondItem="XjJ-TP-DcK" secondAttribute="bottom" constant="12" id="69F-pH-YW9"/>
                             <constraint firstItem="YAb-wp-Hoh" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.9" id="AcH-0h-tGM"/>
                             <constraint firstItem="avy-nJ-kaj" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="BI1-VR-2T6"/>
                             <constraint firstItem="76k-ke-AZY" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="14" id="DAV-xh-MVY"/>
                             <constraint firstItem="76k-ke-AZY" firstAttribute="centerY" secondItem="avy-nJ-kaj" secondAttribute="centerY" id="PnX-No-zy2"/>
                             <constraint firstItem="avy-nJ-kaj" firstAttribute="top" relation="lessThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="15" id="VJg-Vs-9RT"/>
+                            <constraint firstItem="RaD-1b-Vjx" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="27" id="Xd2-OX-9ds"/>
+                            <constraint firstItem="9H8-JH-Pbc" firstAttribute="leading" secondItem="RaD-1b-Vjx" secondAttribute="trailing" constant="87" id="eGC-Ky-9k2"/>
                             <constraint firstItem="9H8-JH-Pbc" firstAttribute="top" secondItem="avy-nJ-kaj" secondAttribute="bottom" constant="17" id="fLO-T0-t1L"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="XjJ-TP-DcK" secondAttribute="trailing" constant="28" id="iq7-0g-GoO"/>
+                            <constraint firstItem="RaD-1b-Vjx" firstAttribute="centerY" secondItem="XjJ-TP-DcK" secondAttribute="centerY" id="nhN-Zc-U79"/>
                             <constraint firstItem="YAb-wp-Hoh" firstAttribute="top" secondItem="9H8-JH-Pbc" secondAttribute="bottom" constant="24" id="puq-Lf-hmi"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="YAb-wp-Hoh" secondAttribute="bottom" constant="20" id="tqP-o4-0wR"/>
                             <constraint firstItem="9H8-JH-Pbc" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="vcp-Kh-Hds"/>

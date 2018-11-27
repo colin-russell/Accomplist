@@ -75,5 +75,14 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         
     }
+    
+    @IBAction func editButtonTapped(_ sender: UIButton) {
+        print("edit")
+    }
+    
+    @IBAction func addButtonTapped(_ sender: Any) {
+        print("add")
+    }
+    
 }
 
