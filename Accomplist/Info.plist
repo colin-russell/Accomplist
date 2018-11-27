@@ -41,5 +41,10 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Louis George Cafe.ttf</string>
+		<string>Louis George Cafe Bold.ttf</string>
+	</array>
 </dict>
 </plist>
