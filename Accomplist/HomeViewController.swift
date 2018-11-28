@@ -106,28 +106,49 @@ class HomeViewController: UIViewController {
         present(textAlertController, animated: true)
     }
     
-    func createToDoList(name: String, toDos: [ToDo]) {
-        
-        let entity = NSEntityDescription.entity(forEntityName: "ToDoList", in: context)
-        let newToDoList = NSManagedObject(entity: entity!, insertInto: context)
-        var toDoData = Data()
-        
-        do {
-            try  toDoData = NSKeyedArchiver.archivedData(withRootObject: toDos, requiringSecureCoding: false)
-        } catch  {
-            print("Failed converting array to Data")
+    
+    func createToDoList() {
+        let textAlertController = UIAlertController(title: "New List", message: "", preferredStyle: .alert)
+        textAlertController.addTextField { (textField) in
+            textField.placeholder = "Name"
         }
-        
-        newToDoList.setValue(name, forKey: "name")
-        //        newToDoList.setValue(colour.htmlRGBaColor, forKey: "listColour")
-        newToDoList.setValue(toDoData, forKey: "toDoData")
-        
-        do {
-            try context.save()
+        let okAlert = UIAlertAction(title: "Ok", style: .default) { (_) in
+            guard let textField = textAlertController.textFields?.first else { return }
             
-        } catch {
-            print("Failed saving")
+            let toDoList = ToDoList(context: self.context)
+            toDoList.name = textField.text
+            
+            let entity = NSEntityDescription.entity(forEntityName: "ToDoList", in: self.context)
+            let newToDoList = NSManagedObject(entity: entity!, insertInto: self.context)
+            var toDoData = Data()
+            
+            do {
+                try  toDoData = NSKeyedArchiver.archivedData(withRootObject: self.currentToDos, requiringSecureCoding: false)
+            } catch  {
+                print("Failed converting array to Data")
+            }
+            
+            toDoList.toDoData = toDoData
+            self.toDoLists.append(toDoList)
+            
+            newToDoList.setValue(toDoList.name, forKey: "name")
+            //        newToDoList.setValue(colour.htmlRGBaColor, forKey: "listColour")
+            newToDoList.setValue(toDoData, forKey: "toDoData")
+            
+            do {
+                try self.context.save()
+                
+            } catch {
+                print("Failed saving")
+            }
+            
+            self.fetchToDoLists()
         }
+        
+        textAlertController.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: nil))
+        textAlertController.addAction(okAlert)
+        present(textAlertController, animated: true)
+
     }
     
     func fetchToDoLists() {
@@ -185,22 +206,7 @@ class HomeViewController: UIViewController {
             }
             listTitleLabel.text = toDoLists[0].name
         } else {
-            let textAlertController = UIAlertController(title: "New List", message: "", preferredStyle: .alert)
-            textAlertController.addTextField { (textField) in
-                textField.placeholder = "Name"
-            }
-            let okAlert = UIAlertAction(title: "Ok", style: .default) { (_) in
-                guard let textField = textAlertController.textFields?.first else { return }
-                let toDoList = ToDoList()
-                toDoList.name = textField.text
-                self.toDoLists.append(toDoList)
-                self.createToDoList(name: textField.text ?? "No Name", toDos: [ToDo]())
-                self.fetchToDoLists()
-            }
-            
-            textAlertController.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: nil))
-            textAlertController.addAction(okAlert)
-            present(textAlertController, animated: true)
+            createToDoList()
         }
     }
     
@@ -224,7 +230,7 @@ class HomeViewController: UIViewController {
     
     @IBAction func menuButtonTapped(_ sender: UIButton) {
         print("menu button tapped")
-        //        createToDoList(name: "To Do List", toDos: currentToDos)
+//        createToDoList()
         if backView.frame.origin == CGPoint.zero {
             showMenu()
         } else {
