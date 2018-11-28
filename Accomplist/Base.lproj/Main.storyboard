@@ -39,8 +39,8 @@
                                             <action selector="editButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="EHc-tZ-2bu"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="List Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7wZ-kk-cED">
-                                        <rect key="frame" x="144" y="111" width="87" height="30"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7wZ-kk-cED">
+                                        <rect key="frame" x="0.0" y="111" width="375" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="0yP-QB-enn"/>
                                         </constraints>
@@ -135,6 +135,7 @@
                                     <constraint firstItem="joQ-QC-ebv" firstAttribute="leading" secondItem="Wcy-FK-enb" secondAttribute="leading" constant="19" id="mNX-1O-Avd"/>
                                     <constraint firstAttribute="trailing" secondItem="M7g-0G-EUf" secondAttribute="trailing" constant="19" id="nIa-3q-qwr"/>
                                     <constraint firstItem="cbr-rI-A4U" firstAttribute="centerY" secondItem="joQ-QC-ebv" secondAttribute="centerY" id="s0C-ih-pOK"/>
+                                    <constraint firstItem="7wZ-kk-cED" firstAttribute="width" secondItem="Wcy-FK-enb" secondAttribute="width" id="u9f-D2-ayw"/>
                                     <constraint firstItem="mPl-Bo-5bF" firstAttribute="height" secondItem="Wcy-FK-enb" secondAttribute="height" multiplier="0.7" id="uhU-Uj-Wy5"/>
                                     <constraint firstItem="7wZ-kk-cED" firstAttribute="centerX" secondItem="Wcy-FK-enb" secondAttribute="centerX" id="yLT-DV-ok8"/>
                                 </constraints>
@@ -152,6 +153,7 @@
                     <connections>
                         <outlet property="backView" destination="Wcy-FK-enb" id="Ihw-Cj-pCR"/>
                         <outlet property="listTableView" destination="mPl-Bo-5bF" id="Q8S-sh-Tik"/>
+                        <outlet property="listTitleLabel" destination="7wZ-kk-cED" id="ioS-Hv-f4Q"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

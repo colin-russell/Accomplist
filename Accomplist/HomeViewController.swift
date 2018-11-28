@@ -17,12 +17,14 @@ class HomeViewController: UIViewController {
     let mWMultiplier: CGFloat = 0.4
     var toDoLists = [ToDoList]()
     var currentToDos = [ToDo]()
+    var currentIndex = 0
     
     var appDelegate = AppDelegate()
     var context = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.mainQueueConcurrencyType)
     
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var listTableView: UITableView!
+    @IBOutlet weak var listTitleLabel: UILabel!
     
     // MARK: Methods
     
@@ -35,6 +37,7 @@ class HomeViewController: UIViewController {
         setupMenu()
         
         fetchToDoLists()
+        updateHome()
         menuTableView.reloadData()
     }
     
@@ -83,8 +86,8 @@ class HomeViewController: UIViewController {
         }
     }
     
-    func showTextViewAlert() {
-        let textAlertController = UIAlertController(title: "New To Do", message: "", preferredStyle: .alert)
+    func showNewListItemAlert() {
+        let textAlertController = UIAlertController(title: "New List Item", message: "", preferredStyle: .alert)
         textAlertController.addTextField { (textField) in
             textField.placeholder = "Task/Reminder Details"
         }
@@ -94,6 +97,7 @@ class HomeViewController: UIViewController {
             let toDo = ToDo()
             toDo.toDoDescription = textField.text ?? "NIL"
             self.currentToDos.append(toDo)
+            self.updateToDoList()
             self.listTableView.reloadData()
         }
         
@@ -143,6 +147,63 @@ class HomeViewController: UIViewController {
         }
     }
     
+    func updateToDoList() {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ToDoList")
+        var toDoData = Data()
+        
+        do {
+            try  toDoData = NSKeyedArchiver.archivedData(withRootObject: currentToDos, requiringSecureCoding: false)
+        } catch  {
+            print("Failed converting array to Data")
+        }
+        
+        do {
+            guard let results = try context.fetch(fetchRequest) as? [NSManagedObject] else { return }
+            if results.count != 0 { // Atleast one was returned
+                
+                // In my case, I only updated the first item in results
+                results[currentIndex].setValue(toDoData, forKey: "toDoData")
+            }
+        } catch {
+            print("Fetch Failed: \(error)")
+        }
+        
+        do {
+            try context.save()
+        }
+        catch {
+            print("Saving Core Data Failed: \(error)")
+        }
+    }
+    
+    func updateHome() {
+        if currentToDos.count > 0 {
+            do {
+                try currentToDos = NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(toDoLists[0].toDoData!) as! [ToDo]
+            } catch {
+                print("Failed unarchiving")
+            }
+            listTitleLabel.text = toDoLists[0].name
+        } else {
+            let textAlertController = UIAlertController(title: "New List", message: "", preferredStyle: .alert)
+            textAlertController.addTextField { (textField) in
+                textField.placeholder = "Name"
+            }
+            let okAlert = UIAlertAction(title: "Ok", style: .default) { (_) in
+                guard let textField = textAlertController.textFields?.first else { return }
+                let toDoList = ToDoList()
+                toDoList.name = textField.text
+                self.toDoLists.append(toDoList)
+                self.createToDoList(name: textField.text ?? "No Name", toDos: [ToDo]())
+                self.fetchToDoLists()
+            }
+            
+            textAlertController.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: nil))
+            textAlertController.addAction(okAlert)
+            present(textAlertController, animated: true)
+        }
+    }
+    
     func removeToDoList(list: ToDoList) {
         context.delete(list)
         
@@ -163,7 +224,7 @@ class HomeViewController: UIViewController {
     
     @IBAction func menuButtonTapped(_ sender: UIButton) {
         print("menu button tapped")
-//        createToDoList(name: "numbers", toDos: currentToDos)
+        //        createToDoList(name: "To Do List", toDos: currentToDos)
         if backView.frame.origin == CGPoint.zero {
             showMenu()
         } else {
@@ -178,7 +239,7 @@ class HomeViewController: UIViewController {
     @IBAction func addButtonTapped(_ sender: Any) {
         print("add")
         
-        showTextViewAlert()
+        showNewListItemAlert()
     }
     
 }
@@ -204,6 +265,24 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if tableView == menuTableView {
+            var toDos = [ToDo]()
+            currentIndex = indexPath.row
+            
+            do {
+                try toDos = NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(toDoLists[indexPath.row].toDoData!) as! [ToDo]
+            } catch {
+                print("Failed unarchiving")
+            }
+            
+            currentToDos = toDos
+            listTitleLabel.text = toDoLists[indexPath.row].name
+            listTableView.reloadData()
+            hideMenu()
+        }
     }
 }
 
