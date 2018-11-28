@@ -41,6 +41,13 @@ class HomeViewController: UIViewController {
         menuTableView.reloadData()
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let dvc = segue.destination as? DetailsViewController {
+            dvc.toDo = currentToDos[currentIndex]
+            dvc.delegate = self
+        }
+    }
+    
     func setupMenu() {
         let listLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width * self.mWMultiplier, height: ((view.frame.height / 3) - 100)))
         listLabel.text = "Lists."
@@ -271,6 +278,11 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         if tableView == listTableView {
             cell = listTableView.dequeueReusableCell(withIdentifier: "toDoCell", for: indexPath)
             cell.textLabel?.text = "\(currentToDos[indexPath.row].toDoDescription)"
+            
+            let toDo = currentToDos[indexPath.row]
+            let checkmark: UITableViewCell.AccessoryType = toDo.isCompleted ? .checkmark : .none
+            cell.accessoryType = checkmark
+            cell.editingAccessoryType = .detailButton
         } else {
             cell = menuTableView.dequeueReusableCell(withIdentifier: "listCell", for: indexPath)
             cell.textLabel?.text = "\(toDoLists[indexPath.row].name ?? "No Name")"
@@ -294,6 +306,10 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             listTitleLabel.text = toDoLists[indexPath.row].name
             listTableView.reloadData()
             hideMenu()
+        } else if tableView == listTableView {
+            currentToDos[indexPath.row].isCompleted = currentToDos[indexPath.row].isCompleted ? false : true
+            updateToDoList()
+            listTableView.reloadData()
         }
     }
     
@@ -307,5 +323,20 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         deleteAction.backgroundColor = .red
         return [deleteAction]
     }
+    
+    func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+        currentIndex = indexPath.row
+        performSegue(withIdentifier: "detailsSegue", sender: self)
+    }
+}
+
+extension HomeViewController: DetailsViewControllerDelegate {
+    func didFinishEditingToDo(toDo: ToDo) {
+        currentToDos[currentIndex] = toDo
+        updateToDoList()
+        listTableView.reloadData()
+    }
+    
+    
 }
 

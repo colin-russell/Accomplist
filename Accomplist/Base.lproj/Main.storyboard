@@ -68,16 +68,6 @@
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="8cd-fg-VWH" id="PWt-02-2HX">
                                                     <rect key="frame" x="0.0" y="0.0" width="337.5" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <subviews>
-                                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoDark" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k1d-b6-DKq">
-                                                            <rect key="frame" x="308" y="11" width="22" height="22"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                            <connections>
-                                                                <segue destination="pBL-Ji-37A" kind="show" id="uuq-8v-5mB"/>
-                                                            </connections>
-                                                        </button>
-                                                    </subviews>
                                                 </tableViewCellContentView>
                                             </tableViewCell>
                                         </prototypes>
@@ -154,6 +144,7 @@
                         <outlet property="backView" destination="Wcy-FK-enb" id="Ihw-Cj-pCR"/>
                         <outlet property="listTableView" destination="mPl-Bo-5bF" id="Q8S-sh-Tik"/>
                         <outlet property="listTitleLabel" destination="7wZ-kk-cED" id="ioS-Hv-f4Q"/>
+                        <segue destination="pBL-Ji-37A" kind="show" identifier="detailsSegue" id="OSg-qv-pmc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -240,6 +231,7 @@
                     <connections>
                         <outlet property="datePicker" destination="EAZ-vG-Q6c" id="Vv5-E9-QGA"/>
                         <outlet property="detailsTextView" destination="9TQ-Hp-dlM" id="W2g-kw-84e"/>
+                        <outlet property="reminderSwitch" destination="m5u-YW-W5c" id="0Y6-bP-NOZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uoN-lR-mFa" userLabel="First Responder" sceneMemberID="firstResponder"/>
