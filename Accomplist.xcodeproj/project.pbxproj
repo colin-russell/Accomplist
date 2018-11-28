@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B66D03C21AE1F6D0000F0B2 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B66D03B21AE1F6D0000F0B2 /* DetailsViewController.swift */; };
 		3BBDF80621ACF28B003363AC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBDF80521ACF28B003363AC /* AppDelegate.swift */; };
 		3BBDF80821ACF28B003363AC /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBDF80721ACF28B003363AC /* HomeViewController.swift */; };
 		3BBDF80B21ACF28B003363AC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3BBDF80921ACF28B003363AC /* Main.storyboard */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3B66D03B21AE1F6D0000F0B2 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 		3BBDF80221ACF28B003363AC /* Accomplist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Accomplist.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BBDF80521ACF28B003363AC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3BBDF80721ACF28B003363AC /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -65,6 +67,7 @@
 				3BBDF81A21AD0FA5003363AC /* Fonts */,
 				3BBDF80521ACF28B003363AC /* AppDelegate.swift */,
 				3BBDF80721ACF28B003363AC /* HomeViewController.swift */,
+				3B66D03B21AE1F6D0000F0B2 /* DetailsViewController.swift */,
 				3BBDF81F21ADC61E003363AC /* UIColorExtension.swift */,
 				3BBDF80921ACF28B003363AC /* Main.storyboard */,
 				3BBDF80F21ACF28F003363AC /* Assets.xcassets */,
@@ -161,6 +164,7 @@
 				3BBDF80E21ACF28B003363AC /* Accomplist.xcdatamodeld in Sources */,
 				3BBDF80621ACF28B003363AC /* AppDelegate.swift in Sources */,
 				3BBDF82021ADC61E003363AC /* UIColorExtension.swift in Sources */,
+				3B66D03C21AE1F6D0000F0B2 /* DetailsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
