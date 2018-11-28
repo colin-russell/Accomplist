@@ -17,7 +17,6 @@
 		3BBDF81321ACF28F003363AC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3BBDF81121ACF28F003363AC /* LaunchScreen.storyboard */; };
 		3BBDF81D21AD10F0003363AC /* Louis George Cafe Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3BBDF81C21AD1070003363AC /* Louis George Cafe Bold.ttf */; };
 		3BBDF81E21AD10F3003363AC /* Louis George Cafe.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3BBDF81B21AD0FBB003363AC /* Louis George Cafe.ttf */; };
-		3BBDF82021ADC61E003363AC /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBDF81F21ADC61E003363AC /* UIColorExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,7 +32,6 @@
 		3BBDF81421ACF28F003363AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3BBDF81B21AD0FBB003363AC /* Louis George Cafe.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Louis George Cafe.ttf"; sourceTree = "<group>"; };
 		3BBDF81C21AD1070003363AC /* Louis George Cafe Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Louis George Cafe Bold.ttf"; sourceTree = "<group>"; };
-		3BBDF81F21ADC61E003363AC /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,7 +69,6 @@
 				3BBDF80721ACF28B003363AC /* HomeViewController.swift */,
 				3B66D03B21AE1F6D0000F0B2 /* DetailsViewController.swift */,
 				3B66D03F21AE478E0000F0B2 /* ToDo.swift */,
-				3BBDF81F21ADC61E003363AC /* UIColorExtension.swift */,
 				3BBDF80921ACF28B003363AC /* Main.storyboard */,
 				3BBDF80F21ACF28F003363AC /* Assets.xcassets */,
 				3BBDF81121ACF28F003363AC /* LaunchScreen.storyboard */,
@@ -167,7 +164,6 @@
 				3BBDF80E21ACF28B003363AC /* Accomplist.xcdatamodeld in Sources */,
 				3BBDF80621ACF28B003363AC /* AppDelegate.swift in Sources */,
 				3B66D04021AE478E0000F0B2 /* ToDo.swift in Sources */,
-				3BBDF82021ADC61E003363AC /* UIColorExtension.swift in Sources */,
 				3B66D03C21AE1F6D0000F0B2 /* DetailsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

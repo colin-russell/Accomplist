@@ -13,8 +13,17 @@ struct Keys {
     static let isCompleted = "isCompleted"
     static let alertDate = "alertDate"
     static let isAlertSet = "isAlertSet"
+    static let identifier = "identifier"
 }
 class ToDo: NSObject, NSCoding {
+    
+    // MARK: Properties
+    
+    var toDoDescription = ""
+    var isCompleted = false
+    var alertDate = Date()
+    var isAlertSet = false
+    var identifier = Date().description
     
     override init() {
     }
@@ -24,6 +33,7 @@ class ToDo: NSObject, NSCoding {
         aCoder.encode(self.isCompleted, forKey: Keys.isCompleted)
         aCoder.encode(self.alertDate, forKey: Keys.alertDate)
         aCoder.encode(self.isAlertSet, forKey: Keys.isAlertSet)
+        aCoder.encode(identifier, forKey: Keys.identifier)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -31,12 +41,6 @@ class ToDo: NSObject, NSCoding {
         self.isCompleted = aDecoder.decodeBool(forKey: Keys.isCompleted)
         self.alertDate = aDecoder.decodeObject(forKey: Keys.alertDate) as! Date
         self.isAlertSet = aDecoder.decodeBool(forKey: Keys.isAlertSet)
+        self.identifier = aDecoder.decodeObject(forKey: Keys.identifier) as! String
     }
-    
-    var toDoDescription = ""
-    var isCompleted = false
-    var alertDate = Date()
-    var isAlertSet = false
-    
-    
 }

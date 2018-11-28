@@ -61,6 +61,7 @@ class HomeViewController: UIViewController {
         createListButton.backgroundColor = UIColor.black
         createListButton.tintColor = UIColor.white
         createListButton.titleLabel?.font = UIFont(name: createListButton.titleLabel!.font.fontName, size: 50)
+        createListButton.addTarget(self, action:#selector(createListButtonTapped), for: .touchUpInside)
         
         menuTableView.register(UITableViewCell.self, forCellReuseIdentifier: "listCell")
         menuTableView.dataSource = self
@@ -113,8 +114,31 @@ class HomeViewController: UIViewController {
         present(textAlertController, animated: true)
     }
     
+    func addToDoList(name: String) {
+        let entity = NSEntityDescription.entity(forEntityName: "ToDoList", in: context)
+        let newToDoList = NSManagedObject(entity: entity!, insertInto: context)
+        
+        var toDoData = Data()
+        
+        do {
+            try  toDoData = NSKeyedArchiver.archivedData(withRootObject: [ToDo](), requiringSecureCoding: false)
+        } catch  {
+            print("Failed converting array to Data")
+        }
+        
+        newToDoList.setValue(name, forKey: "name")
+        
+        newToDoList.setValue(toDoData, forKey: "toDoData")
+        
+        do {
+            try context.save()
+            
+        } catch {
+            print("Failed saving")
+        }
+    }
     
-    func createToDoList() {
+    func showNewToDoListAlert() {
         let textAlertController = UIAlertController(title: "New List", message: "", preferredStyle: .alert)
         textAlertController.addTextField { (textField) in
             textField.placeholder = "Name"
@@ -122,34 +146,9 @@ class HomeViewController: UIViewController {
         let okAlert = UIAlertAction(title: "Ok", style: .default) { (_) in
             guard let textField = textAlertController.textFields?.first else { return }
             
-            let toDoList = ToDoList(context: self.context)
-            toDoList.name = textField.text
-            
-            let entity = NSEntityDescription.entity(forEntityName: "ToDoList", in: self.context)
-            let newToDoList = NSManagedObject(entity: entity!, insertInto: self.context)
-            var toDoData = Data()
-            
-            do {
-                try  toDoData = NSKeyedArchiver.archivedData(withRootObject: self.currentToDos, requiringSecureCoding: false)
-            } catch  {
-                print("Failed converting array to Data")
-            }
-            
-            toDoList.toDoData = toDoData
-            self.toDoLists.append(toDoList)
-            
-            newToDoList.setValue(toDoList.name, forKey: "name")
-            //        newToDoList.setValue(colour.htmlRGBaColor, forKey: "listColour")
-            newToDoList.setValue(toDoData, forKey: "toDoData")
-            
-            do {
-                try self.context.save()
-                
-            } catch {
-                print("Failed saving")
-            }
-            
+            self.addToDoList(name: textField.text!)
             self.fetchToDoLists()
+            self.menuTableView.reloadData()
         }
         
         textAlertController.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: nil))
@@ -161,6 +160,7 @@ class HomeViewController: UIViewController {
     func fetchToDoLists() {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "ToDoList")
         request.returnsObjectsAsFaults = false
+        toDoLists = [ToDoList]()
         
         do {
             let result = try context.fetch(request)
@@ -205,16 +205,16 @@ class HomeViewController: UIViewController {
     }
     
     func updateHome() {
-        if currentToDos.count > 0 {
-            do {
-                try currentToDos = NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(toDoLists[0].toDoData!) as! [ToDo]
-            } catch {
-                print("Failed unarchiving")
-            }
-            listTitleLabel.text = toDoLists[0].name
-        } else {
-            createToDoList()
-        }
+//        if currentToDos.count > 0 {
+//            do {
+//                try currentToDos = NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(toDoLists[0].toDoData!) as! [ToDo]
+//            } catch {
+//                print("Failed unarchiving")
+//            }
+//            listTitleLabel.text = toDoLists[0].name
+//        } else {
+//            createToDoList()
+//        }
     }
     
     func removeToDoList(list: ToDoList) {
@@ -235,8 +235,12 @@ class HomeViewController: UIViewController {
         hideMenu()
     }
     
+    @objc func createListButtonTapped(){
+        showNewToDoListAlert()
+    }
+    
     @IBAction func menuButtonTapped(_ sender: UIButton) {
-        print("menu button tapped")
+        
 //        createToDoList()
         if backView.frame.origin == CGPoint.zero {
             showMenu()
