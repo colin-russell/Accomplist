@@ -39,21 +39,19 @@ class HomeViewController: UIViewController {
     }
     
     func setupMenu() {
-        let createListButton = UIButton(type: .system)
-//        createListButton.frame = CGRect(x: 0, y: 0, width: view.frame.width * self.mWMultiplier, height: ((view.frame.height / 3) - 125))
-        createListButton.frame = CGRect(x: 0, y: ((view.frame.height / 3) - 125), width: view.frame.width * self.mWMultiplier, height: 125)
-        createListButton.setTitle("+", for: .normal)
-        createListButton.backgroundColor = UIColor.black
-        createListButton.tintColor = UIColor.white
-        createListButton.titleLabel?.font = UIFont(name: createListButton.titleLabel!.font.fontName, size: 50)
-        
-//        let listLabel = UILabel(frame: CGRect(x: 0, y: ((view.frame.height / 3) - 125), width: view.frame.width * self.mWMultiplier, height: 125))
-        let listLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width * self.mWMultiplier, height: ((view.frame.height / 3) - 125)))
+        let listLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width * self.mWMultiplier, height: ((view.frame.height / 3) - 100)))
         listLabel.text = "Lists."
         listLabel.textAlignment = .center
         listLabel.font = UIFont(name: "LouisGeorgeCafe-Bold", size: 34)
         listLabel.backgroundColor = UIColor.lightGray
         
+        let createListButton = UIButton(type: .system)
+        createListButton.frame = CGRect(x: 0, y: ((view.frame.height / 3) - 100), width: view.frame.width * self.mWMultiplier, height: 100)
+        createListButton.setTitle("+", for: .normal)
+        createListButton.backgroundColor = UIColor.black
+        createListButton.tintColor = UIColor.white
+        createListButton.titleLabel?.font = UIFont(name: createListButton.titleLabel!.font.fontName, size: 50)
+   
         menuTableView.register(UITableViewCell.self, forCellReuseIdentifier: "listCell")
         menuTableView.dataSource = self
         menuTableView.delegate = self
