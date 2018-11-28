@@ -27,7 +27,10 @@ class DetailsViewController: UIViewController, UITextViewDelegate {
         
         detailsTextView.delegate = self
         detailsTextView.text = toDo.toDoDescription
+        
         reminderSwitch.isOn = toDo.isAlertSet
+        datePicker.date = toDo.alertDate
+        datePicker.minimumDate = Date().addingTimeInterval(120)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -43,20 +46,34 @@ class DetailsViewController: UIViewController, UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             textView.resignFirstResponder()
-            
-            toDo.toDoDescription = textView.text
-            
             return false
         }
         return true
     }
     
+    func setReminder() {
+        if reminderSwitch.isOn{
+            if datePicker.date < Date() {
+                let dateAlert = UIAlertController(title: "Error", message: "Please select a future time", preferredStyle: .alert)
+                dateAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+                present(dateAlert, animated: true)
+                reminderSwitch.isOn = false
+                toDo.isAlertSet = false
+            } else {
+                toDo.alertDate = datePicker.date
+                toDo.isAlertSet = true
+            }
+        }
+    }
     // MARK: Actions
     
     @IBAction func reminderSwitchToggled(_ sender: UISwitch) {
+        setReminder()
     }
     
     @IBAction func doneButtonTapped(_ sender: UIButton) {
+        toDo.toDoDescription = detailsTextView.text
+        setReminder()
         delegate?.didFinishEditingToDo(toDo: toDo)
         dismiss(animated: true, completion: nil)
     }
