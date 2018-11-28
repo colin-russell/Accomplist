@@ -24,6 +24,7 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var listTableView: UITableView!
     
+    // MARK: Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,14 +39,28 @@ class HomeViewController: UIViewController {
     }
     
     func setupMenu() {
+        let createListButton = UIButton(type: .system)
+//        createListButton.frame = CGRect(x: 0, y: 0, width: view.frame.width * self.mWMultiplier, height: ((view.frame.height / 3) - 125))
+        createListButton.frame = CGRect(x: 0, y: ((view.frame.height / 3) - 125), width: view.frame.width * self.mWMultiplier, height: 125)
+        createListButton.setTitle("+", for: .normal)
+        createListButton.backgroundColor = UIColor.black
+        createListButton.tintColor = UIColor.white
+        createListButton.titleLabel?.font = UIFont(name: createListButton.titleLabel!.font.fontName, size: 50)
+        
+//        let listLabel = UILabel(frame: CGRect(x: 0, y: ((view.frame.height / 3) - 125), width: view.frame.width * self.mWMultiplier, height: 125))
+        let listLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width * self.mWMultiplier, height: ((view.frame.height / 3) - 125)))
+        listLabel.text = "Lists."
+        listLabel.textAlignment = .center
+        listLabel.font = UIFont(name: "LouisGeorgeCafe-Bold", size: 34)
+        listLabel.backgroundColor = UIColor.lightGray
+        
         menuTableView.register(UITableViewCell.self, forCellReuseIdentifier: "listCell")
         menuTableView.dataSource = self
         menuTableView.delegate = self
-        menuTableView.backgroundColor = UIColor.darkGray
-        menuTableView.layer.borderColor = UIColor.lightGray.cgColor
-        menuTableView.layer.borderWidth = 2.0
-        menuTableView.frame = CGRect(x: 0, y: 0, width: view.frame.width * self.mWMultiplier, height: view.frame.height)
+        menuTableView.frame = CGRect(x: 0, y: view.frame.height / 3, width: view.frame.width * self.mWMultiplier, height: view.frame.height * (2 / 3))
         
+        view.insertSubview(createListButton, belowSubview: backView)
+        view.insertSubview(listLabel, belowSubview: backView)
         view.insertSubview(menuTableView, belowSubview: backView)
     }
     
@@ -145,12 +160,9 @@ class HomeViewController: UIViewController {
     @IBAction func menuButtonTapped(_ sender: UIButton) {
         print("menu button tapped")
         
-        
-        // show menu
         if backView.frame.origin == CGPoint.zero {
             showMenu()
-            
-        } else { // hide menu
+        } else {
             hideMenu()
         }
     }
