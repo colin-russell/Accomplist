@@ -233,7 +233,13 @@ class HomeViewController: UIViewController {
     }
     
     @IBAction func editButtonTapped(_ sender: UIButton) {
-        print("edit")
+        listTableView.setEditing(!listTableView.isEditing, animated: true)
+        
+        if listTableView.isEditing {
+            sender.setTitle("Done", for: .normal)
+        } else {
+            sender.setTitle("Edit", for: .normal)
+        }
     }
     
     @IBAction func addButtonTapped(_ sender: Any) {
@@ -283,6 +289,17 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             listTableView.reloadData()
             hideMenu()
         }
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let deleteAction = UITableViewRowAction(style: .normal, title: "Delete") { (rowAction, indexPath) in
+            print("delete cell")
+            self.currentToDos.remove(at: indexPath.row)
+            self.updateToDoList()
+            self.listTableView.reloadData()
+        }
+        deleteAction.backgroundColor = .red
+        return [deleteAction]
     }
 }
 
