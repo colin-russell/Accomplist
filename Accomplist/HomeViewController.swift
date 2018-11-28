@@ -10,10 +10,13 @@ import UIKit
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    // MARK: Properties
+    
     let menuTableView = UITableView()
     let mWMultiplier: CGFloat = 0.4
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var listTableView: UITableView!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,6 +55,25 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         for recognizer in backView.gestureRecognizers ?? [] {
             backView.removeGestureRecognizer(recognizer)
         }
+    }
+    
+    func showTextViewAlert() {
+        let textAlertController = UIAlertController(title: "New To Do", message: "", preferredStyle: .alert)
+        textAlertController.addTextField { (textField) in
+            textField.placeholder = "Task/Reminder Details"
+        }
+        let okAlert = UIAlertAction(title: "Ok", style: .default) { (_) in
+            guard let textField = textAlertController.textFields?.first else { return }
+            print("details text: \(String(describing: textField.text))")
+        }
+        
+        textAlertController.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: nil))
+        textAlertController.addAction(okAlert)
+        present(textAlertController, animated: true)
+    }
+    
+    func createToDo() {
+        
     }
     
     // MARK: UITableViewDelegate
@@ -104,6 +126,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     @IBAction func addButtonTapped(_ sender: Any) {
         print("add")
+        
+        
     }
     
 }
