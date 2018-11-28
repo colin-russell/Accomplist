@@ -16,6 +16,7 @@ class HomeViewController: UIViewController {
     let menuTableView = UITableView()
     let mWMultiplier: CGFloat = 0.4
     var toDoLists = [ToDoList]()
+    var currentToDos = [ToDo]()
     
     var appDelegate = AppDelegate()
     var context = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.mainQueueConcurrencyType)
@@ -32,8 +33,8 @@ class HomeViewController: UIViewController {
         
         setupMenu()
         //        createToDoList()
-        fetchToDoList()
-        removeToDoList(list: toDoLists.first!)
+        fetchToDoLists()
+        menuTableView.reloadData()
     }
     
     func setupMenu() {
@@ -76,7 +77,11 @@ class HomeViewController: UIViewController {
         }
         let okAlert = UIAlertAction(title: "Ok", style: .default) { (_) in
             guard let textField = textAlertController.textFields?.first else { return }
-            print("details text: \(String(describing: textField.text))")
+//            print("details text: \(String(describing: textField.text))")
+            var toDo = ToDo()
+            toDo.toDoDescription = textField.text ?? "NIL"
+            self.currentToDos.append(toDo)
+            self.listTableView.reloadData()
         }
         
         textAlertController.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: nil))
@@ -84,16 +89,14 @@ class HomeViewController: UIViewController {
         present(textAlertController, animated: true)
     }
     
-    func createToDoList() {
-        //        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        //        let context = appDelegate.persistentContainer.viewContext
+    func createToDoList(name: String, toDos: [ToDo]) {
         
         let entity = NSEntityDescription.entity(forEntityName: "ToDoList", in: context)
         let newToDoList = NSManagedObject(entity: entity!, insertInto: context)
         
         
-        newToDoList.setValue("To Do", forKey: "name")
-        newToDoList.setValue("blue", forKey: "listColour")
+        newToDoList.setValue(name, forKey: "name")
+//        newToDoList.setValue(colour.htmlRGBaColor, forKey: "listColour")
         newToDoList.setValue(Data(), forKey: "toDoData")
         
         do {
@@ -104,7 +107,7 @@ class HomeViewController: UIViewController {
         }
     }
     
-    func fetchToDoList() {
+    func fetchToDoLists() {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "ToDoList")
         request.returnsObjectsAsFaults = false
         
@@ -159,7 +162,7 @@ class HomeViewController: UIViewController {
     @IBAction func addButtonTapped(_ sender: Any) {
         print("add")
         
-        
+        showTextViewAlert()
     }
     
 }
@@ -167,9 +170,9 @@ class HomeViewController: UIViewController {
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == listTableView  {
-            return 4
+            return currentToDos.count
         } else {
-            return 20
+            return toDoLists.count
         }
     }
     
@@ -178,11 +181,11 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         
         if tableView == listTableView {
             cell = listTableView.dequeueReusableCell(withIdentifier: "toDoCell", for: indexPath)
+            cell.textLabel?.text = "\(currentToDos[indexPath.row].toDoDescription)"
         } else {
             cell = menuTableView.dequeueReusableCell(withIdentifier: "listCell", for: indexPath)
+            cell.textLabel?.text = "\(toDoLists[indexPath.row].name ?? "No Name")"
         }
-        
-        cell.textLabel?.text = "Number: \(indexPath)"
         
         return cell
     }
