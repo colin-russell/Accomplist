@@ -33,7 +33,7 @@ class HomeViewController: UIViewController {
         context = appDelegate.persistentContainer.viewContext
         
         setupMenu()
-        //        createToDoList()
+        
         fetchToDoLists()
         menuTableView.reloadData()
     }
@@ -51,7 +51,7 @@ class HomeViewController: UIViewController {
         createListButton.backgroundColor = UIColor.black
         createListButton.tintColor = UIColor.white
         createListButton.titleLabel?.font = UIFont(name: createListButton.titleLabel!.font.fontName, size: 50)
-   
+        
         menuTableView.register(UITableViewCell.self, forCellReuseIdentifier: "listCell")
         menuTableView.dataSource = self
         menuTableView.delegate = self
@@ -90,8 +90,8 @@ class HomeViewController: UIViewController {
         }
         let okAlert = UIAlertAction(title: "Ok", style: .default) { (_) in
             guard let textField = textAlertController.textFields?.first else { return }
-//            print("details text: \(String(describing: textField.text))")
-            var toDo = ToDo()
+            //            print("details text: \(String(describing: textField.text))")
+            let toDo = ToDo()
             toDo.toDoDescription = textField.text ?? "NIL"
             self.currentToDos.append(toDo)
             self.listTableView.reloadData()
@@ -106,11 +106,17 @@ class HomeViewController: UIViewController {
         
         let entity = NSEntityDescription.entity(forEntityName: "ToDoList", in: context)
         let newToDoList = NSManagedObject(entity: entity!, insertInto: context)
+        var toDoData = Data()
         
+        do {
+            try  toDoData = NSKeyedArchiver.archivedData(withRootObject: toDos, requiringSecureCoding: false)
+        } catch  {
+            print("Failed converting array to Data")
+        }
         
         newToDoList.setValue(name, forKey: "name")
-//        newToDoList.setValue(colour.htmlRGBaColor, forKey: "listColour")
-        newToDoList.setValue(Data(), forKey: "toDoData")
+        //        newToDoList.setValue(colour.htmlRGBaColor, forKey: "listColour")
+        newToDoList.setValue(toDoData, forKey: "toDoData")
         
         do {
             try context.save()
@@ -157,7 +163,7 @@ class HomeViewController: UIViewController {
     
     @IBAction func menuButtonTapped(_ sender: UIButton) {
         print("menu button tapped")
-        
+//        createToDoList(name: "numbers", toDos: currentToDos)
         if backView.frame.origin == CGPoint.zero {
             showMenu()
         } else {
