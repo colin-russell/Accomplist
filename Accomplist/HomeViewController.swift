@@ -40,7 +40,7 @@ class HomeViewController: UIViewController {
         setupMenu()
         
         fetchToDoLists()
-        welcomeGreeting()
+        checkForToDoLists()
         menuTableView.reloadData()
     }
     
@@ -87,13 +87,16 @@ class HomeViewController: UIViewController {
     }
     
     func hideMenu() {
-        let oldFrame = backView.frame
-        
-        UIView.animate(withDuration: 0.5) {
-            self.backView.frame = CGRect(x: oldFrame.origin.x - (oldFrame.width * self.mWMultiplier), y: oldFrame.origin.y, width: oldFrame.width, height: oldFrame.height)
-        }
-        for recognizer in backView.gestureRecognizers ?? [] {
-            backView.removeGestureRecognizer(recognizer)
+        if backView.frame.origin != CGPoint.zero {
+            
+            let oldFrame = backView.frame
+            
+            UIView.animate(withDuration: 0.5) {
+                self.backView.frame = CGRect(x: oldFrame.origin.x - (oldFrame.width * self.mWMultiplier), y: oldFrame.origin.y, width: oldFrame.width, height: oldFrame.height)
+            }
+            for recognizer in backView.gestureRecognizers ?? [] {
+                backView.removeGestureRecognizer(recognizer)
+            }
         }
     }
     
@@ -152,6 +155,7 @@ class HomeViewController: UIViewController {
             self.addToDoList(name: textField.text!)
             self.fetchToDoLists()
             self.menuTableView.reloadData()
+            self.checkForToDoLists()
         }
         
         textAlertController.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: nil))
@@ -221,16 +225,21 @@ class HomeViewController: UIViewController {
         }
     }
     
-    func welcomeGreeting() {
+    func checkForToDoLists() {
         if self.toDoLists.count > 0 {
             editToDoButton.isHidden = false
             listTableView.isHidden = false
             addToDoButton.isHidden = false
             
             welcomeTextView.isHidden = true
+            currentIndex = 0
             unarchiveToDos()
         } else {
-            
+            listTitleLabel.text = ""
+            editToDoButton.isHidden = true
+            listTableView.isHidden = true
+            addToDoButton.isHidden = true
+            welcomeTextView.isHidden = false
         }
     }
     
@@ -244,6 +253,9 @@ class HomeViewController: UIViewController {
             print("Failed saving")
         }
         
+        fetchToDoLists()
+        menuTableView.reloadData()
+        checkForToDoLists()
     }
     
     // MARK: Actions
@@ -299,6 +311,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         
         if tableView == listTableView {
             cell = listTableView.dequeueReusableCell(withIdentifier: "toDoCell", for: indexPath)
+            cell.textLabel?.font = UIFont(name: "LouisGeorgeCafe", size: 25)
             cell.textLabel?.text = "\(currentToDos[indexPath.row].toDoDescription)"
             
             let toDo = currentToDos[indexPath.row]
@@ -328,14 +341,25 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let deleteAction = UITableViewRowAction(style: .normal, title: "Delete") { (rowAction, indexPath) in
-            print("delete cell")
-            self.currentToDos.remove(at: indexPath.row)
-            self.updateToDoList()
-            self.listTableView.reloadData()
+        if tableView == listTableView {
+            let deleteAction = UITableViewRowAction(style: .normal, title: "Delete") { (rowAction, indexPath) in
+                
+                self.currentToDos.remove(at: indexPath.row)
+                self.updateToDoList()
+                self.listTableView.reloadData()
+            }
+            deleteAction.backgroundColor = .red
+            return [deleteAction]
+        } else {
+            let deleteAction = UITableViewRowAction(style: .normal, title: "Delete") { (rowAction, indexPath) in
+                
+                self.removeToDoList(list: self.toDoLists[indexPath.row])
+            }
+            deleteAction.backgroundColor = .red
+            return [deleteAction]
         }
-        deleteAction.backgroundColor = .red
-        return [deleteAction]
+        
+        
     }
     
     func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
