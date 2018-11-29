@@ -29,14 +29,14 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wcy-FK-enb" userLabel="BackView">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="joQ-QC-ebv">
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="joQ-QC-ebv">
                                         <rect key="frame" x="19" y="141" width="34" height="36"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <state key="normal" title="Edit">
                                             <color key="titleColor" red="0.83137254900000002" green="0.86274509799999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
-                                            <action selector="editButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="EHc-tZ-2bu"/>
+                                            <action selector="editToDoButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="n53-gc-cRe"/>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7wZ-kk-cED">
@@ -48,7 +48,7 @@
                                         <color key="textColor" red="0.83137254900000002" green="0.86274509799999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cbr-rI-A4U" userLabel="Add">
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cbr-rI-A4U" userLabel="Add">
                                         <rect key="frame" x="334" y="134" width="22" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="dt0-EA-VZ7"/>
@@ -58,7 +58,7 @@
                                             <action selector="addButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="I2j-F8-pgq"/>
                                         </connections>
                                     </button>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mPl-Bo-5bF" userLabel="List Table View">
+                                    <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mPl-Bo-5bF" userLabel="List Table View">
                                         <rect key="frame" x="19" y="182" width="337.5" height="467"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <prototypes>
@@ -107,6 +107,16 @@
                                         <color key="textColor" red="1" green="0.57810515169999999" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Welcome! Add a new list from the menu on the side" textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F8q-xk-smr" userLabel="welcomeTextView">
+                                        <rect key="frame" x="67.5" y="269.5" width="240" height="128"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="128" id="9dH-tw-hfZ"/>
+                                            <constraint firstAttribute="width" constant="240" id="Rkh-AO-wyq"/>
+                                        </constraints>
+                                        <color key="textColor" red="0.83137254900000002" green="0.86274509799999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" name="LouisGeorgeCafe" family="Louis George Cafe" pointSize="27"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.32852089410000002" blue="0.57488495110000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -123,10 +133,12 @@
                                     <constraint firstItem="Ib5-kz-5eo" firstAttribute="centerY" secondItem="M7g-0G-EUf" secondAttribute="centerY" id="dzT-ue-uGa"/>
                                     <constraint firstItem="7wZ-kk-cED" firstAttribute="top" secondItem="M7g-0G-EUf" secondAttribute="bottom" constant="50" id="hU5-hq-RKK"/>
                                     <constraint firstItem="joQ-QC-ebv" firstAttribute="leading" secondItem="Wcy-FK-enb" secondAttribute="leading" constant="19" id="mNX-1O-Avd"/>
+                                    <constraint firstItem="F8q-xk-smr" firstAttribute="centerY" secondItem="Wcy-FK-enb" secondAttribute="centerY" id="rbn-lT-Ujw"/>
                                     <constraint firstItem="cbr-rI-A4U" firstAttribute="centerY" secondItem="joQ-QC-ebv" secondAttribute="centerY" id="s0C-ih-pOK"/>
                                     <constraint firstItem="7wZ-kk-cED" firstAttribute="width" secondItem="Wcy-FK-enb" secondAttribute="width" id="u9f-D2-ayw"/>
                                     <constraint firstItem="mPl-Bo-5bF" firstAttribute="height" secondItem="Wcy-FK-enb" secondAttribute="height" multiplier="0.7" id="uhU-Uj-Wy5"/>
                                     <constraint firstItem="7wZ-kk-cED" firstAttribute="centerX" secondItem="Wcy-FK-enb" secondAttribute="centerX" id="yLT-DV-ok8"/>
+                                    <constraint firstItem="F8q-xk-smr" firstAttribute="centerX" secondItem="Wcy-FK-enb" secondAttribute="centerX" id="yhp-lS-XgP"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -140,9 +152,12 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="addToDoButton" destination="cbr-rI-A4U" id="7Zi-OT-RMK"/>
                         <outlet property="backView" destination="Wcy-FK-enb" id="Ihw-Cj-pCR"/>
+                        <outlet property="editToDoButton" destination="joQ-QC-ebv" id="qDJ-bo-nOT"/>
                         <outlet property="listTableView" destination="mPl-Bo-5bF" id="Q8S-sh-Tik"/>
                         <outlet property="listTitleLabel" destination="7wZ-kk-cED" id="ioS-Hv-f4Q"/>
+                        <outlet property="welcomeTextView" destination="F8q-xk-smr" id="IPz-Zq-soa"/>
                         <segue destination="pBL-Ji-37A" kind="show" identifier="detailsSegue" id="OSg-qv-pmc"/>
                     </connections>
                 </viewController>

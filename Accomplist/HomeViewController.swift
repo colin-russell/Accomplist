@@ -25,6 +25,9 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var listTableView: UITableView!
     @IBOutlet weak var listTitleLabel: UILabel!
+    @IBOutlet weak var editToDoButton: UIButton!
+    @IBOutlet weak var addToDoButton: UIButton!
+    @IBOutlet weak var welcomeTextView: UITextView!
     
     // MARK: Methods
     
@@ -37,7 +40,7 @@ class HomeViewController: UIViewController {
         setupMenu()
         
         fetchToDoLists()
-        updateHome()
+        welcomeGreeting()
         menuTableView.reloadData()
     }
     
@@ -154,7 +157,21 @@ class HomeViewController: UIViewController {
         textAlertController.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: nil))
         textAlertController.addAction(okAlert)
         present(textAlertController, animated: true)
-
+        
+    }
+    
+    func unarchiveToDos() {
+        var toDos = [ToDo]()
+        
+        do {
+            try toDos = NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(toDoLists[currentIndex].toDoData!) as! [ToDo]
+        } catch {
+            print("Failed unarchiving")
+        }
+        
+        currentToDos = toDos
+        listTitleLabel.text = toDoLists[currentIndex].name
+        listTableView.reloadData()
     }
     
     func fetchToDoLists() {
@@ -204,17 +221,17 @@ class HomeViewController: UIViewController {
         }
     }
     
-    func updateHome() {
-//        if currentToDos.count > 0 {
-//            do {
-//                try currentToDos = NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(toDoLists[0].toDoData!) as! [ToDo]
-//            } catch {
-//                print("Failed unarchiving")
-//            }
-//            listTitleLabel.text = toDoLists[0].name
-//        } else {
-//            createToDoList()
-//        }
+    func welcomeGreeting() {
+        if self.toDoLists.count > 0 {
+            editToDoButton.isHidden = false
+            listTableView.isHidden = false
+            addToDoButton.isHidden = false
+            
+            welcomeTextView.isHidden = true
+            unarchiveToDos()
+        } else {
+            
+        }
     }
     
     func removeToDoList(list: ToDoList) {
@@ -241,7 +258,7 @@ class HomeViewController: UIViewController {
     
     @IBAction func menuButtonTapped(_ sender: UIButton) {
         
-//        createToDoList()
+        //        createToDoList()
         if backView.frame.origin == CGPoint.zero {
             showMenu()
         } else {
@@ -249,7 +266,8 @@ class HomeViewController: UIViewController {
         }
     }
     
-    @IBAction func editButtonTapped(_ sender: UIButton) {
+    
+    @IBAction func editToDoButtonTapped(_ sender: UIButton) {
         listTableView.setEditing(!listTableView.isEditing, animated: true)
         
         if listTableView.isEditing {
@@ -297,17 +315,9 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == menuTableView {
-            var toDos = [ToDo]()
             currentIndex = indexPath.row
             
-            do {
-                try toDos = NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(toDoLists[indexPath.row].toDoData!) as! [ToDo]
-            } catch {
-                print("Failed unarchiving")
-            }
-            
-            currentToDos = toDos
-            listTitleLabel.text = toDoLists[indexPath.row].name
+            unarchiveToDos()
             listTableView.reloadData()
             hideMenu()
         } else if tableView == listTableView {
@@ -340,7 +350,5 @@ extension HomeViewController: DetailsViewControllerDelegate {
         updateToDoList()
         listTableView.reloadData()
     }
-    
-    
 }
 
