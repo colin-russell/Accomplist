@@ -118,6 +118,8 @@ class HomeViewController: UIViewController {
         textAlertController.addTextField { (textField) in
             textField.placeholder = "Task/Reminder Details"
         }
+        textAlertController.textFields?.first?.autocapitalizationType = .sentences
+        
         let okAlert = UIAlertAction(title: "Ok", style: .default) { (_) in
             guard let textField = textAlertController.textFields?.first else { return }
             //            print("details text: \(String(describing: textField.text))")
@@ -162,6 +164,8 @@ class HomeViewController: UIViewController {
         textAlertController.addTextField { (textField) in
             textField.placeholder = "Name"
         }
+        textAlertController.textFields?.first?.autocapitalizationType = .sentences
+        
         let okAlert = UIAlertAction(title: "Ok", style: .default) { (_) in
             guard let textField = textAlertController.textFields?.first else { return }
             
