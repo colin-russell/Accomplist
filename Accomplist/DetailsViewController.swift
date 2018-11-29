@@ -37,7 +37,7 @@ class DetailsViewController: UIViewController, UITextViewDelegate {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let hmv = segue.destination as? HomeViewController {
-            hmv.currentToDos[hmv.currentIndex] = toDo
+            hmv.currentToDos[hmv.currentToDoIndex] = toDo
             hmv.updateToDoList()
             hmv.listTableView.reloadData()
         }

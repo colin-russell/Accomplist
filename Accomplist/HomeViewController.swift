@@ -17,7 +17,8 @@ class HomeViewController: UIViewController {
     let mWMultiplier: CGFloat = 0.6
     var toDoLists = [ToDoList]()
     var currentToDos = [ToDo]()
-    var currentIndex = 0
+    var currentToDoIndex = 0
+    var currentListIndex = 0
     
     var appDelegate = AppDelegate()
     var context = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.mainQueueConcurrencyType)
@@ -46,7 +47,7 @@ class HomeViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let dvc = segue.destination as? DetailsViewController {
-            dvc.toDo = currentToDos[currentIndex]
+            dvc.toDo = currentToDos[currentToDoIndex]
             dvc.delegate = self
         }
     }
@@ -168,13 +169,13 @@ class HomeViewController: UIViewController {
         var toDos = [ToDo]()
         
         do {
-            try toDos = NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(toDoLists[currentIndex].toDoData!) as! [ToDo]
+            try toDos = NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(toDoLists[currentListIndex].toDoData!) as! [ToDo]
         } catch {
             print("Failed unarchiving")
         }
         
         currentToDos = toDos
-        listTitleLabel.text = toDoLists[currentIndex].name
+        listTitleLabel.text = toDoLists[currentListIndex].name
         listTableView.reloadData()
     }
     
@@ -209,9 +210,7 @@ class HomeViewController: UIViewController {
         do {
             guard let results = try context.fetch(fetchRequest) as? [NSManagedObject] else { return }
             if results.count != 0 { // Atleast one was returned
-                
-                // In my case, I only updated the first item in results
-                results[currentIndex].setValue(toDoData, forKey: "toDoData")
+                results[currentListIndex].setValue(toDoData, forKey: "toDoData")
             }
         } catch {
             print("Fetch Failed: \(error)")
@@ -232,7 +231,7 @@ class HomeViewController: UIViewController {
             addToDoButton.isHidden = false
             
             welcomeTextView.isHidden = true
-            currentIndex = 0
+            currentListIndex = 0
             unarchiveToDos()
         } else {
             listTitleLabel.text = ""
@@ -329,14 +328,39 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == menuTableView {
-            currentIndex = indexPath.row
+            currentListIndex = indexPath.row
             
             unarchiveToDos()
             listTableView.reloadData()
             hideMenu()
         } else if tableView == listTableView {
             currentToDos[indexPath.row].isCompleted = currentToDos[indexPath.row].isCompleted ? false : true
-            updateToDoList()
+            
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ToDoList")
+            var toDoData = Data()
+            
+            do {
+                try  toDoData = NSKeyedArchiver.archivedData(withRootObject: currentToDos, requiringSecureCoding: false)
+            } catch  {
+                print("Failed converting array to Data")
+            }
+            
+            do {
+                guard let results = try context.fetch(fetchRequest) as? [NSManagedObject] else { return }
+                if results.count != 0 {
+                    results[currentListIndex].setValue(toDoData, forKey: "toDoData")
+                }
+            } catch {
+                print("Fetch Failed: \(error)")
+            }
+            
+            do {
+                try context.save()
+            }
+            catch {
+                print("Saving Core Data Failed: \(error)")
+            }
+            
             listTableView.reloadData()
         }
     }
@@ -364,14 +388,15 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-        currentIndex = indexPath.row
+        currentToDoIndex = indexPath.row
         performSegue(withIdentifier: "detailsSegue", sender: self)
     }
 }
 
 extension HomeViewController: DetailsViewControllerDelegate {
     func didFinishEditingToDo(toDo: ToDo) {
-        currentToDos[currentIndex] = toDo
+        
+        currentToDos[currentToDoIndex] = toDo
         updateToDoList()
         listTableView.reloadData()
     }
