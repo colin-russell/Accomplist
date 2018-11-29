@@ -59,19 +59,31 @@ class HomeViewController: UIViewController {
         listLabel.font = UIFont(name: "LouisGeorgeCafe-Bold", size: 34)
         listLabel.backgroundColor = UIColor.lightGray
         
+        let editListButton = UIButton(type: .system)
+        editListButton.frame = CGRect(x: 0, y: ((view.frame.height / 3) - 100), width: (view.frame.width * self.mWMultiplier) / 2, height: 100)
+        editListButton.setTitle("Edit", for: .normal)
+        editListButton.backgroundColor = UIColor.darkGray
+        editListButton.tintColor = UIColor.white
+        editListButton.titleLabel?.font = UIFont(name: "LouisGeorgeCafe", size: 25)
+        editListButton.addTarget(self, action:#selector(editListButtonTapped(sender:)), for: .touchUpInside)
+        
         let createListButton = UIButton(type: .system)
-        createListButton.frame = CGRect(x: 0, y: ((view.frame.height / 3) - 100), width: view.frame.width * self.mWMultiplier, height: 100)
+        createListButton.frame = CGRect(x: editListButton.frame.width, y: ((view.frame.height / 3) - 100), width: (view.frame.width * self.mWMultiplier) / 2, height: 100)
         createListButton.setTitle("+", for: .normal)
         createListButton.backgroundColor = UIColor.black
         createListButton.tintColor = UIColor.white
-        createListButton.titleLabel?.font = UIFont(name: createListButton.titleLabel!.font.fontName, size: 50)
+        createListButton.titleLabel?.font = UIFont(name: "LouisGeorgeCafe-Bold", size: 34)
+        
         createListButton.addTarget(self, action:#selector(createListButtonTapped), for: .touchUpInside)
+        
+        
         
         menuTableView.register(UITableViewCell.self, forCellReuseIdentifier: "listCell")
         menuTableView.dataSource = self
         menuTableView.delegate = self
         menuTableView.frame = CGRect(x: 0, y: view.frame.height / 3, width: view.frame.width * self.mWMultiplier, height: view.frame.height * (2 / 3))
         
+        view.insertSubview(editListButton, belowSubview: backView)
         view.insertSubview(createListButton, belowSubview: backView)
         view.insertSubview(listLabel, belowSubview: backView)
         view.insertSubview(menuTableView, belowSubview: backView)
@@ -263,8 +275,18 @@ class HomeViewController: UIViewController {
         hideMenu()
     }
     
-    @objc func createListButtonTapped(){
+    @objc func createListButtonTapped() {
         showNewToDoListAlert()
+    }
+    
+    @objc func editListButtonTapped(sender: UIButton) {
+        menuTableView.setEditing(!menuTableView.isEditing, animated: true)
+        
+        if menuTableView.isEditing {
+            sender.setTitle("Done", for: .normal)
+        } else {
+            sender.setTitle("Edit", for: .normal)
+        }
     }
     
     @IBAction func menuButtonTapped(_ sender: UIButton) {
@@ -336,31 +358,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         } else if tableView == listTableView {
             currentToDos[indexPath.row].isCompleted = currentToDos[indexPath.row].isCompleted ? false : true
             
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ToDoList")
-            var toDoData = Data()
-            
-            do {
-                try  toDoData = NSKeyedArchiver.archivedData(withRootObject: currentToDos, requiringSecureCoding: false)
-            } catch  {
-                print("Failed converting array to Data")
-            }
-            
-            do {
-                guard let results = try context.fetch(fetchRequest) as? [NSManagedObject] else { return }
-                if results.count != 0 {
-                    results[currentListIndex].setValue(toDoData, forKey: "toDoData")
-                }
-            } catch {
-                print("Fetch Failed: \(error)")
-            }
-            
-            do {
-                try context.save()
-            }
-            catch {
-                print("Saving Core Data Failed: \(error)")
-            }
-            
+            updateToDoList()
             listTableView.reloadData()
         }
     }
