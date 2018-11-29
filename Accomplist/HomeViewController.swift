@@ -14,7 +14,7 @@ class HomeViewController: UIViewController {
     // MARK: Properties
     
     let menuTableView = UITableView()
-    let mWMultiplier: CGFloat = 0.4
+    let mWMultiplier: CGFloat = 0.6
     var toDoLists = [ToDoList]()
     var currentToDos = [ToDo]()
     var currentIndex = 0
@@ -320,6 +320,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             cell.editingAccessoryType = .detailButton
         } else {
             cell = menuTableView.dequeueReusableCell(withIdentifier: "listCell", for: indexPath)
+            cell.textLabel?.font = UIFont(name: "LouisGeorgeCafe", size: 25)
             cell.textLabel?.text = "\(toDoLists[indexPath.row].name ?? "No Name")"
         }
         
